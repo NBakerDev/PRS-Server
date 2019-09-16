@@ -21,10 +21,10 @@ namespace PRS_Client.Controllers
         }
 
         // Get: api/Users/Username/Password
-        [HttpGet("{Username}/{Password}")]
-        public async Task<ActionResult<User>> Login(string usrname, string pass) {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Username.Equals(usrname) &&
-            u.Password.Equals(pass));
+        [HttpGet("{username}/{password}")]
+        public async Task<ActionResult<User>> Login(string username, string password) {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Username.Equals(username) &&
+            u.Password.Equals(password));
             if (user == null) {
                 return NotFound();
             }

@@ -36,12 +36,15 @@ namespace PRS_Client.Controllers
             return request;
         }
 
-        // PUT: api/Requests/5/review
+        // PUT: api/Requests/5/status
         [HttpPut("{id}/{review}")]
-        public void setStatusToReview(int id) {
-            var status = _context.Requests.Find(id);
-            status.Status = "REVIEW";
-
+        public async Task<IActionResult> SetStatusToReview(int id, Request request) {
+            var request = _context.Requests.SingleOrDefaultAsync(r => r.Id.Equals(id));
+            if(request == null) { return NotFound(); }
+            request.Status = "REVIEW";
+            _context.Requests.Update(request);
+            _context.SaveChangesAsync();
+            return request;
             }
 
         

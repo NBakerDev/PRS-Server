@@ -24,7 +24,7 @@ namespace PRS_Client.Models {
         public string Status { get; set; } = "NEW";
         [Required]
         [Column(TypeName = "decimal(11,2)")]
-        public decimal Total { get; private set; } = 0;
+        public decimal Total { get; set; } = 0;
         public int UserId { get; set; }
 
         public virtual User User { get; set; }
