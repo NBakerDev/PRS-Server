@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 
 namespace PRS_Client.Models {
     public class Request {
@@ -18,17 +21,21 @@ namespace PRS_Client.Models {
         public string RejectionReason { get; set; }
         [Required]
         [StringLength(20)]
-        public string DeliveryMode { get; set; } = "Pickup";
+        public string DeliveryMode { get; set; } 
         [Required]
         [StringLength(10)]
-        public string Status { get; set; } = "NEW";
+        public string Status { get; set; } 
         [Required]
         [Column(TypeName = "decimal(11,2)")]
-        public decimal Total { get; set; } = 0;
+        public decimal Total { get; set; } 
         public int UserId { get; set; }
+
+       
+
 
         public virtual User User { get; set; }
 
+        public virtual RequestLine RequestLines { get; set; }
         public Request() {
 
         }

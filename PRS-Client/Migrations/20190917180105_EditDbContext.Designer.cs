@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PRS_Client.Models;
 
 namespace PRS_Client.Migrations
 {
     [DbContext(typeof(PRSDbContext))]
-    partial class PRSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190917180105_EditDbContext")]
+    partial class EditDbContext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,8 +118,7 @@ namespace PRS_Client.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("RequestId")
-                        .IsUnique();
+                    b.HasIndex("RequestId");
 
                     b.ToTable("RequestLines");
                 });
@@ -228,8 +229,8 @@ namespace PRS_Client.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("PRS_Client.Models.Request", "Request")
-                        .WithOne("RequestLines")
-                        .HasForeignKey("PRS_Client.Models.RequestLine", "RequestId")
+                        .WithMany()
+                        .HasForeignKey("RequestId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

@@ -15,6 +15,8 @@ namespace PRS_Client.Models {
 
         public PRSDbContext(DbContextOptions<PRSDbContext> context) : base(context) { }
 
+       
+
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<Product>(ent => {
 
@@ -26,7 +28,28 @@ namespace PRS_Client.Models {
                 ent.HasIndex(entity => entity.Username).HasName("index_Username").IsUnique();
             });
 
+            modelBuilder.Entity<Request>(ent => {
+            ent.Property(entity => entity.DeliveryMode).HasDefaultValueSql("('Pickup')");
 
-        }
+            ent.Property(entity => entity.Status).HasDefaultValueSql("('NEW')");
+
+            ent.Property(entity => entity.Total).HasDefaultValueSql("(0)");
+
+          
+
+            });
+
+            
+
+
+
+            modelBuilder.Entity<RequestLine>(ent => {
+                ent.Property(entity => entity.Quantity).HasDefaultValueSql("(0)");
+
+            });
+
+            }
+       
+            
     }
 }

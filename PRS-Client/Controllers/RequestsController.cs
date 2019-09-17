@@ -68,8 +68,8 @@ namespace PRS_Client.Controllers
             return NoContent();
         }
 
-
-        [HttpPost("{id}/{Review}")]
+        // POST: api/Requests/(id)/Review
+        [HttpPost("{id}/Review")]
         public async Task<ActionResult<Request>> SetStatusToReview(int id) {
             var request = await _context.Requests.FindAsync(id);
             if (request == null) {
@@ -80,8 +80,8 @@ namespace PRS_Client.Controllers
             _context.SaveChanges();
             return request;
         }
-
-        [HttpPost("{id}/{Approve}")]
+        // POST: api/Requests/(id)/Approve
+        [HttpPost("{id}/Approve")]
         public async Task<ActionResult<Request>> SetStatusToApproved(int id) {
             var request = await _context.Requests.FindAsync(id);
             if (request == null) {
@@ -92,8 +92,8 @@ namespace PRS_Client.Controllers
             _context.SaveChanges();
             return request;
         }
-
-        [HttpPost("{id}/{Reject}")]
+        // POST: api/Requests/(id)/Reject
+        [HttpPost("{id}/Reject")]
         public async Task<ActionResult<Request>> SetStatusToRejected(int id) {
             var request = await _context.Requests.FindAsync(id);
             if (request == null) {
@@ -109,8 +109,10 @@ namespace PRS_Client.Controllers
         [HttpPost]
         public async Task<ActionResult<Request>> PostRequest(Request request)
         {
+            
             _context.Requests.Add(request);
             await _context.SaveChangesAsync();
+            calcTotal(request.Id);
 
             return CreatedAtAction("GetRequest", new { id = request.Id }, request);
         }
@@ -135,5 +137,17 @@ namespace PRS_Client.Controllers
         {
             return _context.Requests.Any(e => e.Id == id);
         }
+
+        public decimal calcTotal(int id) {
+            var dbRequest = _context.Requests.Find(id);
+            
+            dbRequest.Total = _context.RequestLines.Where(r => r.RequestId.Equals(id))
+                .Sum(rl => rl.Product.Price * rl.Quantity);
+            _context.SaveChanges();
+            return dbRequest.Total;
+           
+        }
+
+
     }
 }
