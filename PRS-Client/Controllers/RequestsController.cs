@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PRS_Client.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace PRS_Client.Controllers
 {
@@ -36,19 +37,6 @@ namespace PRS_Client.Controllers
             return request;
         }
 
-        // PUT: api/Requests/5/status
-        [HttpPut("{id}/{review}")]
-        public async Task<IActionResult> SetStatusToReview(int id, Request request) {
-            var request = _context.Requests.SingleOrDefaultAsync(r => r.Id.Equals(id));
-            if(request == null) { return NotFound(); }
-            request.Status = "REVIEW";
-            _context.Requests.Update(request);
-            _context.SaveChangesAsync();
-            return request;
-            }
-
-        
-    
 
         // PUT: api/Requests/5
         [HttpPut("{id}")]
@@ -78,6 +66,43 @@ namespace PRS_Client.Controllers
             }
 
             return NoContent();
+        }
+
+
+        [HttpPost("{id}/{Review}")]
+        public async Task<ActionResult<Request>> SetStatusToReview(int id) {
+            var request = await _context.Requests.FindAsync(id);
+            if (request == null) {
+                return NotFound();
+            }
+            request.Status = "REVIEW";
+            _context.Requests.Update(request);
+            _context.SaveChanges();
+            return request;
+        }
+
+        [HttpPost("{id}/{Approve}")]
+        public async Task<ActionResult<Request>> SetStatusToApproved(int id) {
+            var request = await _context.Requests.FindAsync(id);
+            if (request == null) {
+                return NotFound();
+            }
+            request.Status = "APPROVED";
+            _context.Requests.Update(request);
+            _context.SaveChanges();
+            return request;
+        }
+
+        [HttpPost("{id}/{Reject}")]
+        public async Task<ActionResult<Request>> SetStatusToRejected(int id) {
+            var request = await _context.Requests.FindAsync(id);
+            if (request == null) {
+                return NotFound();
+            }
+            request.Status = "REJECTED";
+            _context.Requests.Update(request);
+            _context.SaveChanges();
+            return request;
         }
 
         // POST: api/Requests

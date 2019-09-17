@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace PRS_Client.Models {
         [Required]
         public int Quantity { get; set; } = 1;
 
+        [JsonIgnore]
         public virtual Request Request { get; set; }
         public virtual Product Product { get; set; }
 
