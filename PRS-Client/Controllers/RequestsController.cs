@@ -18,6 +18,17 @@ namespace PRS_Client.Controllers
         public RequestsController(PRSDbContext context) {
             _context = context;
         }
+        //Method returns requests to be reviewed that are not linked to their user id
+       // GET: api/Requests/id
+       [HttpGet]
+        public async Task<ActionResult<IEnumerable<Request>>> NeedsToReview(int id) {
+            
+            var request = _context.Requests.Where(r => r.Status == "REVIEW" && r.UserId != id );
+            return await request.ToListAsync();
+
+        }
+
+
 
         // GET: api/Requests
         [HttpGet]
