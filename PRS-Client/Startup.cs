@@ -27,7 +27,7 @@ namespace PRS_Client {
                 opt.UseLazyLoadingProxies();
                 opt.UseSqlServer(conString);
             });
-
+            services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -36,7 +36,7 @@ namespace PRS_Client {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             app.UseMvc();
         }
     }
